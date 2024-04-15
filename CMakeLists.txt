@@ -21,3 +21,4 @@ include_directories(
 )
 
 add_subdirectory(src/libs)
+add_subdirectory(src/nodes)

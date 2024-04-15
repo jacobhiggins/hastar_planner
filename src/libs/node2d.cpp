@@ -16,6 +16,11 @@ int Node2D::get_yidx() const {return yidx;}
 void Node2D::set_xidx(const int& xidx_, const int& width){xidx = std::max(0, std::min(xidx_, width-1));}
 void Node2D::set_yidx(const int& yidx_, const int& height){yidx = std::max(0, std::min(yidx_, height-1));}
 
+// String representation
+std::string Node2D::to_string() const {
+    return "xidx: " + std::to_string(xidx) + " yidx: " + std::to_string(yidx);
+}
+
 // Auxilliary functions
 double get_dist(const Node2D& node1, const Node2D& node2){
     return std::sqrt(std::pow(node1.xidx - node2.xidx, 2) + std::pow(node1.yidx - node2.yidx, 2));

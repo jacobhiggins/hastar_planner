@@ -1,4 +1,5 @@
 #include <vector>
+#include <string>
 #ifndef NODE2D
 #define NODE2D
 class Node2D {
@@ -13,8 +14,9 @@ class Node2D {
         int get_yidx();
         int get_xidx() const;
         int get_yidx() const;
+        std::string to_string() const;
 };
 double get_dist(const Node2D& node1, const Node2D& node2);
-std::vector<Node2D> get_neighbors(Node2D& node, const int& width, const int& height);
+std::vector<Node2D> get_neighbors(const Node2D& node, const int& width, const int& height);
 std::vector<double> node2xy(const Node2D& node, const double& resolution, const double& x0, const double& y0);
 #endif

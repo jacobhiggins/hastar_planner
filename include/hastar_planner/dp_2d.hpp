@@ -3,6 +3,7 @@
 #include <iostream>
 #include <nav_msgs/OccupancyGrid.h>
 #include <optional>
+#include <memory>
 
 #ifndef DP_2D
 #define DP_2D
@@ -19,9 +20,12 @@ class DynamicProgram2D{
         std::vector<std::vector<double>> opt_cost; // Optimal cost map
         std::vector<std::vector<bool>> visited_mask; // Visited mask
         Node2D goal; // Goal node
+        DynamicProgram2D ();
+        DynamicProgram2D (const int& iter_min_, const int& iter_max_);
         DynamicProgram2D (const int& width_, const int& height_, const int& iter_min_, const int& iter_max_);
         // Algorithm
         std::vector<Node2D> search(const Node2D& start);
+        std::vector<Node2D> get_path(const Node2D& start);
         std::vector<Node2D> search(const Node2D& start, const Node2D& goal_);
         // Auxilliary functions
         void reset_opt_cost();
@@ -31,6 +35,7 @@ class DynamicProgram2D{
         void set_goal(const Node2D& goal_);
         void set_occ_map(const nav_msgs::OccupancyGridPtr& occ_map_);
         void set_ext_map(const nav_msgs::OccupancyGridPtr& ext_map_);
+        void set_map_dims(const int& width_, const int& height_);
 };
 
 #endif
