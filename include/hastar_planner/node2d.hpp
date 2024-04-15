@@ -13,8 +13,6 @@ class Node2D {
         int get_yidx();
         int get_xidx() const;
         int get_yidx() const;
-        int get_xidx(const int& width);
-        int get_yidx(const int& height);
 };
 double get_dist(const Node2D& node1, const Node2D& node2);
 std::vector<Node2D> get_neighbors(Node2D& node, const int& width, const int& height);

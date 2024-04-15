@@ -11,8 +11,6 @@ int Node2D::get_xidx() {return xidx;}
 int Node2D::get_yidx() {return yidx;}
 int Node2D::get_xidx() const {return xidx;}
 int Node2D::get_yidx() const {return yidx;}
-int Node2D::get_xidx(const int& width) {return std::max(0, std::min(xidx, width-1));}
-int Node2D::get_yidx(const int& height) {return std::max(0, std::min(yidx, height-1));}
 
 // Setters
 void Node2D::set_xidx(const int& xidx_, const int& width){xidx = std::max(0, std::min(xidx_, width-1));}
@@ -28,14 +26,14 @@ std::vector<double> node2xy(const Node2D& node, const double& resolution, const 
     xy.push_back(y0 + node.get_yidx() * resolution);
     return xy;
 }
-std::vector<Node2D> get_neighbors(Node2D& node, const int& width, const int& height){
+std::vector<Node2D> get_neighbors(const Node2D& node, const int& width, const int& height){
     std::vector<Node2D> neighbors;
     for (int i = -1; i <= 1; i++){
         for (int j = -1; j <= 1; j++){
             if (i == 0 && j == 0) continue;
 
-            int n_xidx = node.get_xidx(width) + i;
-            int n_yidx = node.get_yidx(height) + j;
+            int n_xidx = node.get_xidx() + i;
+            int n_yidx = node.get_yidx() + j;
             if (n_xidx < 0 || n_xidx >= width || n_yidx < 0 || n_yidx >= height) continue;
 
             Node2D neighbor(n_xidx, n_yidx);
