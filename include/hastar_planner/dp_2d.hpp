@@ -27,6 +27,8 @@ class DynamicProgram2D{
         std::vector<Node2D> search(const Node2D& start);
         std::vector<Node2D> get_path(const Node2D& start);
         std::vector<Node2D> search(const Node2D& start, const Node2D& goal_);
+        double find_opt_cost(const Node2D& start);
+        void dp_iterations(const Node2D& start);
         // Auxilliary functions
         void reset_opt_cost();
         // Getters

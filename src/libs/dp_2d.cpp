@@ -20,21 +20,60 @@ DynamicProgram2D::DynamicProgram2D(const int& width_, const int& height_, const 
 // Algorithm
 std::vector<Node2D> DynamicProgram2D::search(const Node2D& start){
     std::vector<Node2D> path;
-    if (occ_map == nullptr){
+    if (occ_map == nullptr){ // Skip if no occupancy map set
         std::cout << "Occupancy map not set" << std::endl;
         return path;
     }
-    if (!goal.init){
+    if (!goal.init){ // Skip if goal is not initialized
         std::cout << "Goal node not set" << std::endl;
         return path;
     }
-    if (opt_cost[start.get_xidx()][start.get_yidx()] != INF){
+    if (opt_cost[start.get_xidx()][start.get_yidx()] != INF){ // If this state was already visited during a previous query, then use previous computation
         path = get_path(start);
         return path;
     }
+
+    dp_iterations(start);
+    
+    if (opt_cost[start.get_xidx()][start.get_yidx()] == INF){
+        std::cout << "DP did not reach start node" << std::endl;
+    } else {
+        path = get_path(start);
+    }
+        
+    return path;
+}
+
+double DynamicProgram2D::find_opt_cost(const Node2D& start){
+    double cost = INF;
+    if (occ_map == nullptr){ // Skip if no occupancy map set
+        std::cout << "Occupancy map not set" << std::endl;
+        return cost;
+    }
+    if (!goal.init){ // Skip if goal is not initialized
+        std::cout << "Goal node not set" << std::endl;
+        return cost;
+    }
+    if (opt_cost[start.get_xidx()][start.get_yidx()] != INF){ // If this state was already visited during a previous query, then use previous computation
+        return opt_cost[start.get_xidx()][start.get_yidx()];
+    }
+
+    dp_iterations(start);
+
+    if (opt_cost[start.get_xidx()][start.get_yidx()] == INF){
+        std::cout << "DP did not reach start node" << std::endl;
+    } else {
+        cost = opt_cost[start.get_xidx()][start.get_yidx()];
+    }
+
+    return cost;
+    
+}
+
+void DynamicProgram2D::dp_iterations(const Node2D& start){
     opt_cost[goal.get_xidx()][goal.get_yidx()] = 0;
     int iter = 0;
-    while (iter < iter_max){
+    while (iter < iter_max){ // Main logic loop
         ++iter;
         // std::cout << "\tIteration: " << iter << std::endl;
         for (int i = 0; i < width; ++i){
@@ -43,7 +82,9 @@ std::vector<Node2D> DynamicProgram2D::search(const Node2D& start){
                 std::vector<Node2D> vs = get_neighbors(u, width, height);
                 for (const Node2D& v : vs){
                     // std::cout << v.to_string() << std::endl;
-                    int occ_val = occ_map->data[v.get_xidx() + v.get_yidx() * width];
+                    if (opt_cost[v.get_xidx()][v.get_yidx()] == INF) continue; // If next state has INF optimal cost, then skip
+
+                    int occ_val = occ_map->data[v.get_xidx() + v.get_yidx() * width]; // If next state is occupied, then skip
                     if (occ_val==100 || occ_val==-1) continue;
                     
                     double cost = get_dist(u, v); // + ext_map->data[v.get_xidx() + v.get_yidx() * width];
@@ -54,14 +95,6 @@ std::vector<Node2D> DynamicProgram2D::search(const Node2D& start){
         }
         if (opt_cost[start.get_xidx()][start.get_yidx()] < INF && iter>=iter_min) break;
     }
-    
-    if (opt_cost[start.get_xidx()][start.get_yidx()] == INF){
-        std::cout << "DP did not reach start node" << std::endl;
-    } else {
-        path = get_path(start);
-    }
-        
-    return path;
 }
 
 std::vector<Node2D> DynamicProgram2D::get_path(const Node2D& start){

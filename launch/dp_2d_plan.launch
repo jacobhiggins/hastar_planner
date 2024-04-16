@@ -1,0 +1,7 @@
+<launch>
+    <node pkg="hastar_planner" type="dp_2d_node" name="dp_2d_node" output="screen">
+        <param name="occ_map_topic" value="/map_downsampled"/>
+        <param name="min_iters" value="25"/>
+        <param name="max_iters" value="100"/>
+    </node>
+</launch>
